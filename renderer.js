@@ -1,4 +1,5 @@
 /* global L:false */
+const { ipcRenderer } = require('electron')
 
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
@@ -22,4 +23,16 @@ map.on(L.Draw.Event.CREATED, function (event) {
   var layer = event.layer
 
   drawnItems.addLayer(layer)
+})
+
+ipcRenderer.on('load-file', (event, contents) => {
+  let data = JSON.parse(contents)
+
+  if (data.type === 'FeatureCollection') {
+    data.features.forEach(feature => {
+      drawnItems.addLayer(L.geoJSON(feature))
+    })
+  } else if (data.type === 'Feature') {
+    drawnItems.addLayer(L.geoJSON(data))
+  }
 })

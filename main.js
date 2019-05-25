@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Menu, dialog } = require('electron')
+const fs = require('fs')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -41,7 +42,9 @@ function createWindow () {
               filters: [{ name: 'GeoJSON', extensions: ['geojson'] }]
             },
             (filePaths) => {
-              console.log(filePaths[0])
+              fs.readFile(filePaths[0], (err, contents) => {
+                mainWindow.webContents.send('load-file', contents)
+              })
             })
           }
         },
