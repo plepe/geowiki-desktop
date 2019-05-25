@@ -3,14 +3,20 @@
   <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
+    <link rel='stylesheet' href='node_modules/leaflet/dist/leaflet.css'>
+    <script src='node_modules/leaflet/dist/leaflet.js'></script>
+    <style>
+#map {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+    </style>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-
+    <div id='map'>
     <script>
       // You can also require other files to run in this process
       require('./renderer.js')
