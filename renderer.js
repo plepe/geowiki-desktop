@@ -30,9 +30,13 @@ ipcRenderer.on('load-file', (event, contents) => {
 
   if (data.type === 'FeatureCollection') {
     data.features.forEach(feature => {
-      drawnItems.addLayer(L.geoJSON(feature))
+      L.geoJSON(feature).getLayers().forEach(layer =>
+        drawnItems.addLayer(layer)
+      )
     })
   } else if (data.type === 'Feature') {
-    drawnItems.addLayer(L.geoJSON(data))
+    drawnItems.addLayer(L.geoJSON(data).getLayers().forEach(layer =>
+      drawnItems.addLayer(layer)
+    ))
   }
 })
