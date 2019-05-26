@@ -40,3 +40,13 @@ ipcRenderer.on('load-file', (event, contents) => {
     ))
   }
 })
+ipcRenderer.on('save-file', (event) => {
+  let data = {
+    type: 'FeatureCollection',
+    features: drawnItems.getLayers().map(layer => {
+      return layer.toGeoJSON()
+    })
+  }
+
+  ipcRenderer.send('save-file-result', null, JSON.stringify(data, null, '  '))
+})

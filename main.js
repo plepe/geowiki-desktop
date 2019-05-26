@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu, dialog } = require('electron')
+const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron')
 const fs = require('fs')
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -48,7 +48,25 @@ function createWindow () {
             })
           }
         },
-        { label: 'Save' },
+        {
+          label: 'Save as ...',
+          click () {
+            dialog.showSaveDialog({
+              properties: [ 'saveFile' ],
+              filters: [{ name: 'GeoJSON', extensions: ['geojson'] }]
+            },
+            (filePath) => {
+              ipcMain.once('save-file-result',
+                (event, err, content) => {
+                  fs.writeFile(filePath, content,
+                    (err) => console.error(err)
+                  )
+                }
+              )
+              mainWindow.webContents.send('save-file')
+            })
+          }
+        },
         { role: 'quit' }
       ]
     }
