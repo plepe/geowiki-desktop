@@ -1,13 +1,13 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "geoedit-desktop",
+  "version": "0.0.1",
+  "description": "GeoEditor desktop application",
   "main": "main.js",
   "scripts": {
     "lint": "standard --fix *.js",
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/plepe/geoedit-desktop",
   "keywords": [
     "Electron",
     "quick",
