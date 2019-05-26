@@ -43,6 +43,10 @@ function createWindow () {
             },
             (filePaths) => {
               fs.readFile(filePaths[0], (err, contents) => {
+                if (err) {
+                  return console.error(err)
+                }
+
                 mainWindow.webContents.send('load-file', contents)
               })
             })
