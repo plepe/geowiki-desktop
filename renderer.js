@@ -1,6 +1,6 @@
 /* global L:false */
 const { ipcRenderer } = require('electron')
-const Editor = require('geoedit-editor')
+const Editor = require('geowiki-editor')
 
 let editor = new Editor({
   dom: 'map'

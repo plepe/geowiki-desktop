@@ -1,13 +1,13 @@
 {
-  "name": "geoedit-desktop",
+  "name": "geowiki-desktop",
   "version": "0.0.1",
-  "description": "GeoEditor desktop application",
+  "description": "Geowiki desktop application",
   "main": "main.js",
   "scripts": {
     "lint": "standard --fix *.js",
     "start": "electron ."
   },
-  "repository": "https://github.com/plepe/geoedit-desktop",
+  "repository": "https://github.com/plepe/geowiki-desktop",
   "keywords": [
     "Electron",
     "quick",
@@ -22,7 +22,6 @@
     "standard": "^12.0.1"
   },
   "dependencies": {
-    "geoedit-editor": "*",
     "leaflet": "^1.5.1",
     "leaflet-draw": "^1.0.4"
   }
