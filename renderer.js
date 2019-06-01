@@ -1,13 +1,20 @@
 /* global L:false */
 const { ipcRenderer } = require('electron')
-const Editor = require('geowiki-editor')
+require('leaflet-geowiki/editor')
 
-let editor = new Editor({
-  dom: 'map'
+let map = L.map('map').setView([ 48.2006, 16.3673 ], 16)
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map)
+
+let editor = L.geowikiEditor({
+  sidebar: 'sidebar'
 })
+editor.addTo(map)
 
 ipcRenderer.on('load-file', (event, contents) => {
-  editor.load(contents)
+  editor.load(JSON.parse(contents))
 })
 ipcRenderer.on('save-file', (event) => {
   ipcRenderer.send('save-file-result', null, editor.save())

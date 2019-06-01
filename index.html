@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Hello World!</title>
     <link rel='stylesheet' href='node_modules/modulekit-form/dist/modulekit-form.css'>
-    <link rel='stylesheet' href='node_modules/geowiki-editor/css/style.css'>
     <link rel='stylesheet' href='node_modules/leaflet/dist/leaflet.css'>
     <link rel='stylesheet' href='node_modules/leaflet-draw/dist/leaflet.draw.css'>
     <script src='node_modules/leaflet/dist/leaflet.js'></script>
@@ -13,14 +12,24 @@
 #map {
     position: absolute;
     left: 0;
-    right: 0;
+    right: 250px;
     top: 0;
     bottom: 0;
+}
+#sidebar {
+    position: absolute;
+    right: 0;
+    width: 245px;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid black;
+    padding: 2px;
 }
     </style>
   </head>
   <body>
-    <div id='map'>
+    <div id='map'></div>
+    <div id='sidebar'></div>
     <script>
       // You can also require other files to run in this process
       require('./renderer.js')
