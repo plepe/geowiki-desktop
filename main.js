@@ -47,7 +47,7 @@ function createWindow () {
                   return console.error(err)
                 }
 
-                mainWindow.webContents.send('load-file', contents)
+                mainWindow.webContents.send('load-file', filePaths[0], contents.toString())
               })
             })
           }
