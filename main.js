@@ -39,7 +39,10 @@ function createWindow () {
           click () {
             dialog.showOpenDialog({
               properties: [ 'openFile' ],
-              filters: [{ name: 'GeoJSON', extensions: ['geojson'] }]
+              filters: [
+                { name: 'GeoJSON', extensions: ['geojson'] },
+                { name: 'UMap', extensions: ['umap'] }
+              ]
             },
             (filePaths) => {
               fs.readFile(filePaths[0], (err, contents) => {
@@ -57,7 +60,9 @@ function createWindow () {
           click () {
             dialog.showSaveDialog({
               properties: [ 'saveFile' ],
-              filters: [{ name: 'GeoJSON', extensions: ['geojson'] }]
+              filters: [
+                { name: 'GeoJSON', extensions: ['geojson'] }
+              ]
             },
             (filePath) => {
               ipcMain.once('save-file-result',
