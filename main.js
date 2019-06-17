@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron')
 const fs = require('fs')
+const async = require('async')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -58,22 +59,37 @@ function createWindow () {
         {
           label: 'Save as ...',
           click () {
-            dialog.showSaveDialog({
-              properties: [ 'saveFile' ],
-              filters: [
-                { name: 'GeoJSON', extensions: ['geojson'] }
-              ]
-            },
-            (filePath) => {
-              ipcMain.once('save-file-result',
-                (event, err, content) => {
-                  fs.writeFile(filePath, content,
-                    (err) => console.error(err)
+            ipcMain.once('save-file-result',
+              (event, err, files) => {
+                async.eachSeries(files, (filedata, done) => {
+                  console.log(filedata)
+                  dialog.showSaveDialog(
+                    {
+                      properties: [ 'saveFile' ],
+                      filters: [
+                        { name: 'Geowiki', extensions: ['geowiki'] }
+                      ]
+                    },
+                    (filePath) => {
+                      if (err) {
+                        return console.error(err)
+                      }
+
+                      fs.writeFile(filePath, filedata.contents,
+                        (err) => {
+                          done()
+
+                          if (err) {
+                            console.error(err)
+                          }
+                        }
+                      )
+                    }
                   )
-                }
-              )
-              mainWindow.webContents.send('save-file')
-            })
+                })
+              }
+            )
+            mainWindow.webContents.send('save-file')
           }
         },
         { role: 'quit' }
