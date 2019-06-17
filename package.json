@@ -22,9 +22,10 @@
     "standard": "^12.0.1"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.9.0",
     "leaflet": "^1.5.1",
     "leaflet-draw": "^1.0.4",
-    "leaflet-geowiki": "*",
+    "leaflet-geowiki": "https://github.com/plepe/leaflet-geowiki",
     "modulekit-form": "https://github.com/plepe/modulekit-form#browserify"
   }
 }
