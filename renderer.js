@@ -14,7 +14,9 @@ let editor = L.geowikiEditor({
 editor.addTo(map)
 
 ipcRenderer.on('load-file', (event, filedata) => {
-  editor.load(filedata)
+  editor.load(filedata, () => {
+    map.fitBounds(editor.getBounds())
+  })
 })
 ipcRenderer.on('save-file', (event) => {
   ipcRenderer.send('save-file-result', null, editor.saveAll())
