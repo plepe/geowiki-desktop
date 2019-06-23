@@ -13,8 +13,8 @@ let editor = L.geowikiEditor({
 })
 editor.addTo(map)
 
-ipcRenderer.on('load-file', (event, filename, contents) => {
-  editor.load(filename, contents)
+ipcRenderer.on('load-file', (event, filedata) => {
+  editor.load(filedata)
 })
 ipcRenderer.on('save-file', (event) => {
   ipcRenderer.send('save-file-result', null, editor.save())

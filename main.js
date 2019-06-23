@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron')
 const fs = require('fs')
+const path = require('path')
 const async = require('async')
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -51,7 +52,11 @@ function createWindow () {
                   return console.error(err)
                 }
 
-                mainWindow.webContents.send('load-file', filePaths[0], contents.toString())
+                mainWindow.webContents.send('load-file', {
+                  path: path.dirname(filePaths[0]),
+                  name: path.basename(filePaths[0]),
+                  contents: contents.toString()
+                })
               })
             })
           }
@@ -62,7 +67,6 @@ function createWindow () {
             ipcMain.once('save-file-result',
               (event, err, files) => {
                 async.eachSeries(files, (filedata, done) => {
-                  console.log(filedata)
                   dialog.showSaveDialog(
                     {
                       properties: [ 'saveFile' ],
