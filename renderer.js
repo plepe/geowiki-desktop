@@ -17,5 +17,5 @@ ipcRenderer.on('load-file', (event, filedata) => {
   editor.load(filedata)
 })
 ipcRenderer.on('save-file', (event) => {
-  ipcRenderer.send('save-file-result', null, editor.save())
+  ipcRenderer.send('save-file-result', null, editor.saveAll())
 })
