@@ -42,8 +42,10 @@ function createWindow () {
             dialog.showOpenDialog({
               properties: [ 'openFile' ],
               filters: [
-                { name: 'GeoJSON', extensions: ['geojson'] },
-                { name: 'UMap', extensions: ['umap'] }
+                { name: 'All Geo files', extensions: [ 'geojson', 'geowiki', 'umap' ] },
+                { name: 'Geowiki', extensions: [ 'geowiki' ] },
+                { name: 'GeoJSON', extensions: [ 'geojson' ] },
+                { name: 'UMap', extensions: [ 'umap' ] }
               ]
             },
             (filePaths) => {
