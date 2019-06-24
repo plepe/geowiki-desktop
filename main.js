@@ -8,6 +8,47 @@ const async = require('async')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+function saveAs (filedata, done) {
+  dialog.showSaveDialog(
+    {
+      defaultPath: (filedata.path || '.') + '/' + filedata.name,
+      properties: [ 'saveFile' ],
+      filters: [
+        { name: 'Geowiki', extensions: ['geowiki'] }
+      ]
+    },
+    (filePath) => {
+      if (!filePath) {
+        return
+      }
+
+      fs.writeFile(filePath, filedata.contents,
+        (err) => {
+          done()
+
+          if (err) {
+            console.error(err)
+          }
+        }
+      )
+    }
+  )
+}
+
+function save (filedata, done) {
+  let filePath = filedata.path + '/' + filedata.name
+
+  fs.writeFile(filePath, filedata.contents,
+    (err) => {
+      done()
+
+      if (err) {
+        console.error(err)
+      }
+    }
+  )
+}
+
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -72,7 +113,7 @@ function createWindow () {
           }
         },
         {
-          label: 'Save as ...',
+          label: 'Save',
           click () {
             ipcMain.once('save-file-result',
               (event, err, files) => {
@@ -81,31 +122,27 @@ function createWindow () {
                 }
 
                 async.eachSeries(files, (filedata, done) => {
-                  dialog.showSaveDialog(
-                    {
-                      defaultPath: (filedata.path || '.') + '/' + filedata.name,
-                      properties: [ 'saveFile' ],
-                      filters: [
-                        { name: 'Geowiki', extensions: ['geowiki'] }
-                      ]
-                    },
-                    (filePath) => {
-                      if (!filePath) {
-                        return
-                      }
-
-                      fs.writeFile(filePath, filedata.contents,
-                        (err) => {
-                          done()
-
-                          if (err) {
-                            console.error(err)
-                          }
-                        }
-                      )
-                    }
-                  )
+                  if (!filedata.path) {
+                    saveAs(filedata, done)
+                  } else {
+                    save(filedata, done)
+                  }
                 })
+              }
+            )
+            mainWindow.webContents.send('save-file')
+          }
+        },
+        {
+          label: 'Save as ...',
+          click () {
+            ipcMain.once('save-file-result',
+              (event, err, files) => {
+                if (err) {
+                  return console.error(err)
+                }
+
+                async.eachSeries(files, saveAs)
               }
             )
             mainWindow.webContents.send('save-file')
