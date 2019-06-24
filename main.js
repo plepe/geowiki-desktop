@@ -68,6 +68,10 @@ function createWindow () {
           click () {
             ipcMain.once('save-file-result',
               (event, err, files) => {
+                if (err) {
+                  return console.error(err)
+                }
+
                 async.eachSeries(files, (filedata, done) => {
                   dialog.showSaveDialog(
                     {
@@ -78,10 +82,6 @@ function createWindow () {
                       ]
                     },
                     (filePath) => {
-                      if (err) {
-                        return console.error(err)
-                      }
-
                       if (!filePath) {
                         return
                       }
