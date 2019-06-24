@@ -40,7 +40,7 @@ function createWindow () {
           label: 'Open',
           click () {
             dialog.showOpenDialog({
-              properties: [ 'openFile' ],
+              properties: [ 'openFile', 'multiSelections' ],
               filters: [
                 { name: 'All Geo files', extensions: [ 'geojson', 'geowiki', 'umap' ] },
                 { name: 'Geowiki', extensions: [ 'geowiki' ] },
@@ -49,17 +49,25 @@ function createWindow () {
               ]
             },
             (filePaths) => {
-              fs.readFile(filePaths[0], (err, contents) => {
-                if (err) {
-                  return console.error(err)
-                }
+              if (!filePaths) {
+                return
+              }
 
-                mainWindow.webContents.send('load-file', {
-                  path: path.dirname(filePaths[0]),
-                  name: path.basename(filePaths[0]),
-                  contents: contents.toString()
-                })
-              })
+              filePaths.forEach(
+                (filePath) => {
+                  fs.readFile(filePath, (err, contents) => {
+                    if (err) {
+                      return console.error(err)
+                    }
+
+                    mainWindow.webContents.send('load-file', {
+                      path: path.dirname(filePath),
+                      name: path.basename(filePath),
+                      contents: contents.toString()
+                    })
+                  })
+                }
+              )
             })
           }
         },
