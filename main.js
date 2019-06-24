@@ -71,6 +71,7 @@ function createWindow () {
                 async.eachSeries(files, (filedata, done) => {
                   dialog.showSaveDialog(
                     {
+                      defaultPath: (filedata.path || '.') + '/' + filedata.name,
                       properties: [ 'saveFile' ],
                       filters: [
                         { name: 'Geowiki', extensions: ['geowiki'] }
