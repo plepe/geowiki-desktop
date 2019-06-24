@@ -82,6 +82,10 @@ function createWindow () {
                         return console.error(err)
                       }
 
+                      if (!filePath) {
+                        return
+                      }
+
                       fs.writeFile(filePath, filedata.contents,
                         (err) => {
                           done()
