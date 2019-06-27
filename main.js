@@ -3,6 +3,14 @@ const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const async = require('async')
+const ArgumentParser = require('argparse').ArgumentParser
+
+let parser = new ArgumentParser({
+  addHelp: true,
+  description: 'Geowiki - an application for creating informative maps'
+})
+
+let args = parser.parseArgs()
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

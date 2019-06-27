@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.9.0",
+    "argparse": "^1.0.10",
     "leaflet": "^1.5.1",
     "leaflet-draw": "^1.0.4",
     "leaflet-geowiki": "https://github.com/plepe/leaflet-geowiki",
