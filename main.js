@@ -10,6 +10,14 @@ let parser = new ArgumentParser({
   description: 'Geowiki - an application for creating informative maps'
 })
 
+parser.addArgument(
+  'filename',
+  {
+    help: 'List of files to open',
+    nargs: '*'
+  }
+)
+
 let args = parser.parseArgs()
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -57,6 +65,24 @@ function save (filedata, done) {
   )
 }
 
+function loadFiles (filePaths, mainWindow) {
+  filePaths.forEach(
+    (filePath) => {
+      fs.readFile(filePath, (err, contents) => {
+        if (err) {
+          return console.error(err)
+        }
+
+        mainWindow.webContents.send('load-file', {
+          path: path.dirname(filePath),
+          name: path.basename(filePath),
+          contents: contents.toString()
+        })
+      })
+    }
+  )
+}
+
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -81,6 +107,12 @@ function createWindow () {
     mainWindow = null
   })
 
+  mainWindow.webContents.once('dom-ready', () => {
+    if (args.filename) {
+      loadFiles(args.filename, mainWindow)
+    }
+  })
+
   var menu = Menu.buildFromTemplate([
     {
       label: 'File',
@@ -102,21 +134,7 @@ function createWindow () {
                 return
               }
 
-              filePaths.forEach(
-                (filePath) => {
-                  fs.readFile(filePath, (err, contents) => {
-                    if (err) {
-                      return console.error(err)
-                    }
-
-                    mainWindow.webContents.send('load-file', {
-                      path: path.dirname(filePath),
-                      name: path.basename(filePath),
-                      contents: contents.toString()
-                    })
-                  })
-                }
-              )
+              loadFiles(filePaths, mainWindow)
             })
           }
         },
